@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Products Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            getProducts();
+        });
+        function getProducts() {
+            $.ajax({
+                headers: { 
+'Authorization': 'Mobivat ' + btoa('mobivat:1234'),
+'Content-Type': 'application/json'
+},
+                url: 'http://dev.mobivat.com:8080/vsdc_module/mobivat/api/product/productId?upc=224444445',
+                method: 'GET',
+                dataType: 'jsonp',
+                xhrFields: {
+        withCredentials: true
+    },
+                success: function(data) {
+                    var tableBody = $('#tabledata tbody');
+                    tableBody.empty();
+                    $(data).each(function(index, element) {
+                        tableBody.append('<tr>');
+                        tableBody.append('<td>' + element.pname + '</td>' + '<td>' + element.description + '</td>' + '<td>' + element.quantity + '</td>', '');
+                    })
+                },
+                error: function(error) {
+                    alert(error);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <table id="tabledata" border="1" style="border-collapse:collapse">
+        <thead>
+            <tr>
+                <th>pname</th>
+                <th>description</th>
+                <th>quantity</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+<button onclick="window.location.href = 'http://localhost:3000/findpdf';">PDF Document</button>
+</html
