@@ -1,49 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" /><html>
-      <head>
-          <meta charset="utf-8" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          <title>Products Info</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-          <script type="text/javascript">
-              $(document).ready(function() {
-                  getProducts();
-              });
-              function getProducts() {
-                $.get( "http://dev.mobivat.com:8080/vsdc_module/mobivat/api/product/productId?upc=224444445", { pname: "Juice1", description: "nutritional", quantity:"2" } )
-  .done(function( data ) {
-    alert( "Data Loaded: " + data );
-  });
-              }
-          </script>
-      </head>
-      <body>
-          <table id="tabledata" border="1" style="border-collapse:collapse">
-              <thead>
-                  <tr>
-                      <th>pname</th>
-                      <th>description</th>
-                      <th>quantity</th>
-                  </tr>
-              </thead>
-              <tbody></tbody>
-          </table>
-      </body>
-      <button onclick="window.location.href = 'http://localhost:3000/findpdf';">PDF Document</button>
-      </html
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html>
 
-    <title>Ghibli App</title>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mobicash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
-    <link href="style.css" rel="stylesheet" />
-  </head>
+            getCustomers();
+        });
 
-  <body>
-    <div id="root"></div>
-    <script src="scripts.js"></script>
-  </body>
+        function getCustomers() {
+            $.ajax({
+
+                url: 'http://localhost:3000/api/v1/customers',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var tableBody = $('#tabledata tbody');
+                    tableBody.empty();
+                    $(data).each(function(index, element) {
+                        tableBody.append('<tr>');
+                        tableBody.append('<td>' + element.name + '</td>' + '<td>' + element.phone + '</td>' + '<td>' + element.address + '</td>', '');
+                    })
+                },
+                error: function(error) {
+                    alert(error);
+                }
+            });
+        }
+        $(document).ready(function() {
+            $('#searchButton').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/todos/' + $('#upc').val(),
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(dat) {
+                        var tableBody = $('#tabledat tbody');
+                        tableBody.empty();
+                        $(dat).each(function(index, element) {
+                            tableBody.append('<tr>');
+                            tableBody.append('<td>' + element.userId + '</td>' + '<td>' + element.id + '</td>' + '<td>' + element.title + '</td>' + '<td>' + element.completed + '</td>', '');
+                        })
+                    },
+                    error: function(error) {
+                        alert(JSON.stringify(error));
+                    }
+                })
+            })
+        });
+    </script>
+</head>
+
+<body width="50%">
+    <h1>All Customers</h1>
+    <table id="tabledata" class="table table-dark">
+        <thead>
+            <tr>
+                <th style="color:green">Name</th>
+                <th style="color:green">Phone</th>
+                <th style="color:green">Address</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <input type="text" id="upc" name="upc" size="10" maxlength="256" placeholder="enter id" class="form-control mt-5">
+    <input type="submit" name="search_button" id="searchButton" value="Search" class="btn btn-info mt-2">
+
+    <h1>Product details</h1>
+    <table id="tabledat" class="table table-dark">
+        <thead>
+            <tr>
+                <th style="color:green">userId</th>
+                <th style="color:green">Id</th>
+                <th style="color:green">Title</th>
+                <th style="color:green">Completed</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+
+
+</body>
+<a href="http://localhost:3000/api/v1/customerpdf" class="btn btn-success mt-2 mb-2">Download Pdf</a>
+<a href="index.html" class="btn btn-dark mt-2 mb-2">Back home</a>
+
 </html>

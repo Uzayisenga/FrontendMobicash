@@ -12,10 +12,10 @@
         function getProducts() {
             $.ajax({
                 headers: { 
-'Authorization': 'Mobivat ' + btoa('mobivat:1234'),
+'Authorization': 'typicode ' + btoa('typicode'),
 'Content-Type': 'application/json'
 },
-                url: 'http://dev.mobivat.com:8080/vsdc_module/mobivat/api/product/productId?upc=224444445',
+                url: 'http://jsonplaceholder.typicode.com/todos/'+$('#id').val(),
                 method: 'GET',
                 dataType: 'jsonp',
                 xhrFields: {
@@ -26,7 +26,7 @@
                     tableBody.empty();
                     $(data).each(function(index, element) {
                         tableBody.append('<tr>');
-                        tableBody.append('<td>' + element.pname + '</td>' + '<td>' + element.description + '</td>' + '<td>' + element.quantity + '</td>', '');
+                        tableBody.append('<td>' + element.userId + '</td>' + '<td>' + element.id + '</td>' + '<td>' + element.title + '</td>' +'<td>' + element.completed +'</td>');
                     })
                 },
                 error: function(error) {
@@ -37,16 +37,19 @@
     </script>
 </head>
 <body>
+        <input type="text"  id="id" name="upc" size="40" maxlength="256" placeholder="enter upc" class="form-control">
+        <input type="submit" id="search" name="search_button" value="Search Product" class="btn btn-success mt-2" onclick="getProducts()">
     <table id="tabledata" border="1" style="border-collapse:collapse">
         <thead>
             <tr>
-                <th>pname</th>
-                <th>description</th>
-                <th>quantity</th>
+                <th>UserId</th>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Completed</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
 </body>
 <button onclick="window.location.href = 'http://localhost:3000/findpdf';">PDF Document</button>
-</html
+</html>
